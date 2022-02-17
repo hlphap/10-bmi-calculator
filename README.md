@@ -1,5 +1,5 @@
 # Getting Started with Create React App
-## App starter at 12:53 17/02/2022.\
+## App starter at 12:53 17/02/2022.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
