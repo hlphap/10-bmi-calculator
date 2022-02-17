@@ -1,0 +1,58 @@
+.bmiForm__label {
+  display: block;
+  color: #fff !important;
+  font-size: 1rem !important;
+  margin-bottom: 6px;
+}
+
+.bmiForm__input {
+  background-color: #fff !important;
+  border-radius: 44px !important;
+  width: 90% !important;
+  padding: 0px 15px !important;
+}
+
+.bmiForm__input:focus {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.calculateBtn {
+  background-color: #3f51b5;
+  padding: 15px 50px;
+  color: white;
+  font-size: 16px;
+  border-radius: 44px;
+  cursor: pointer;
+  border: 1px solid #3f51b5;
+  margin-bottom: 40px;
+  transform: translate3d(0, 0, 0);
+  transition: all 0.2s ease;
+}
+
+.calculateBtn:hover {
+  background-color: #fff;
+  transform: translate(0px, -2px);
+  color: #5364c3;
+  box-shadow: 0px 15px 30px -12px rgba(255, 255, 255, 0.2);
+}
+
+.calculateBtn:focus {
+  background-color: #32408f;
+}
+
+.calculateBtn:focus:hover {
+  color: white;
+}
+
+.calculateBtn:disabled {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  cursor: default;
+}
+
+.calculateBtn:disabled:hover {
+  box-shadow: none;
+  transform: translate(0, 0);
+}
