@@ -1,89 +1,91 @@
-import styles from './App.module.css'
+import "./App.css";
+import Bar from "./components/Bar/Bar";
+import BmiForm from "./components/BmiForm/BmiForm";
+import { getData, storeData } from "./helpers/localStorage";
+import Info from "./components/Info/Info";
+import { v4 as uuidv4 } from "uuid";
 
-import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import clsx from 'clsx';
-import { getData, storeData } from './helpers/localStorage'
-import BmiForm from './components/BmiForm/BmiForm';
-import Bar from './components/Bar/Bar';
-import Info from './components/Info/Info';
+import { useEffect, useState } from "react";
 
 function App() {
-  const initialData = getData('data') ? getData('data') : [];
-  const [data, setData] = useState(initialData);
-  const [chart, setChart] = useState({});
+    const initialData = () => getData("data") || [];
+    const [data, setData] = useState(initialData);
 
-  useEffect(() => {
-    storeData('data', data)
-    const date = data.map(obj => obj.date);
-    const bmi = data.map(obj => obj.bmi);
-    setChart({ date, bmi })
-  }, [data])
+    useEffect(() => {
+        storeData("data", data);
+    }, [data]);
 
-  const handleChange = (info) => {
-    let heightInM = info.height / 100;
-    info.bmi = (info.weight / (heightInM * heightInM)).toFixed(2);
-    info.id = uuidv4();
-    const newData = [...data, info];
-    setData(newData)
-  }
+    const handleCalculatorBMI = (value) => {
+        const { weight, height } = value;
+        value.bmi = (weight / ((height * height) / 10000)).toFixed(2);
+        value.id = uuidv4();
+        setData([...data, value]);
+    };
 
-  const handleDelete = (id) => {
-    storeData('lastData', data);
-    let newData = data.filter(data => data.id !== id);
-    setData(newData)
-  }
+    const handleDelete = (id) => {
+        storeData("lastData", data);
+        const newData = data.filter((item) => item.id !== id);
+        setData(newData);
+    };
 
-  const handleUndo = () => {
-    setData(getData('lastData'));
-  }
+    const handleUndo = () => {
+        setData(getData("lastData"));
+    };
 
-  return (
-    <>
-      <div className='container'>
-        <div className='row center'>
-          <h1 className='white-text'> BMI Tracker </h1>
-        </div>
-        <div className='row'>
-          <div className='col m12 s12'>
-            <BmiForm change={handleChange} />
-            <Bar labelData={chart.date} bmiData={chart.bmi}></Bar>
-          </div>
-          <div className='row center'>
-            <h4 className='white-text'>
-              The Last 7 Times
-            </h4>
-            <div className='data-container row'>
-              {(data.length > 0) ? (
-                <>
-                  {data.map(info => (
-                    <Info
-                      key={info.id}
-                      id={info.id}
-                      weight={info.weight}
-                      height={info.height}
-                      date={info.date}
-                      bmi={info.bmi}
-                      deleteCard={handleDelete}
-                    />
-                  ))}
-                </>
-              ) : (
-                <div className='center white-text'>No log found</div>
-              )}
+    return (
+        <>
+            <div className="app">
+                <div className="grid">
+                    <h1 className="app__title text--center ">Tracker BMI</h1>
+                    <div className="app__body">
+                        <div className="grid__row">
+                            <div className="grid__col-4">
+                                <BmiForm calculateBmi={handleCalculatorBMI} />
+                            </div>
+                            <div className="grid__col-8">
+                                <Bar
+                                    labelData={data.map((obj) => obj.date)}
+                                    bmiData={data.map((obj) => obj.bmi)}
+                                />
+                            </div>
+                        </div>
+                        <div className="app__history">
+                            <div className="app__history-header">
+                                <h1 className="app__history-title">
+                                    History for 7 timer
+                                </h1>
+                                <button
+                                    className="btn btn--secondary"
+                                    disabled={data.length === 7}
+                                    onClick={handleUndo}
+                                >
+                                    Undo
+                                </button>
+                            </div>
+                            <div className="app__history-list grid__row">
+                                {data &&
+                                    data.map((info) => (
+                                        <div
+                                            key={info.id}
+                                            className="grid__col-3"
+                                        >
+                                            <Info
+                                                id={info.id}
+                                                bmi={info.bmi}
+                                                weight={info.weight}
+                                                height={info.height}
+                                                date={info.date}
+                                                handleDelete={handleDelete}
+                                            />
+                                        </div>
+                                    ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          {getData('lastData') && (
-            <div className='center'>
-              <button className='calculate-btn' onClick={handleUndo}>
-                Undo
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-    </>
-  )
+        </>
+    );
 }
 
 export default App;

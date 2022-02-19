@@ -1,63 +1,77 @@
-import { useState } from "react";
-import PropTypes from 'prop-types';
+import "./BmiForm.css";
 
-import styles from './BmiForm.module.css'
+import { useState, useRef } from "react";
 
-const initialFormData = {
-    weight: '',
-    height: '',
-    date: '',
-}
-function BmiForm({ change }) {
-    const [formData, setFormData] = useState(initialFormData);
+function BmiForm({ calculateBmi }) {
+    const initialData = useRef({
+        weight: "",
+        height: "",
+    });
+    const [formData, setFormData] = useState(initialData.current);
 
-    const handleOnChange = (e) => {
+    const handleChange = (e) => {
         let { name, value } = e.target;
-        if (value > 999) {
-            value = 999;
-        }
-        const date = new Date().toLocaleString().split(',')[0];
-        const newFormData = {
+        if (value > 200) value = 200;
+        const date = new Date().toLocaleString().split(",")[0];
+        const newData = {
             ...formData,
-            [name]: value.toString(),
+            [name]: value,
             date,
-        }
-        setFormData(newFormData);
-    }
+        };
+        setFormData(newData);
+    };
 
     const handleSubmit = () => {
-        change(formData);
-        setFormData(initialFormData);
-    }
+        calculateBmi(formData);
+        setFormData(initialData.current);
+    };
 
     return (
         <>
-            <div className="bmiForm">
-                <div className="row">
-                    <div className="col m6 s12">
-                        <label className={styles.bmiForm__label} htmlFor="weight">Weight</label>
-                        <input className={styles.bmiForm__input} type="number" name='weight' value={formData.weight} onChange={handleOnChange} />
+            <div className="bmi-form">
+                <h1 className="bmi-form__title">Information</h1>
+                <div className="bmi-form__info">
+                    <div className="bmi-form__wrap">
+                        <label className="bmi-form__label" htmlFor="weight">
+                            Weight
+                        </label>
+                        <input
+                            name="weight"
+                            placeholder="50kg"
+                            className="bmi-form__input"
+                            type="number"
+                            value={formData.weight}
+                            onChange={handleChange}
+                            min="0"
+                            max="200"
+                        />
                     </div>
-                    <div className="col m6 s12">
-                        <label className={styles.bmiForm__label} htmlFor="height">Height</label>
-                        <input className={styles.bmiForm__input} type="number" name='height' value={formData.height} onChange={handleOnChange} />
+                    <div className="bmi-form__wrap">
+                        <label className="bmi-form__label" htmlFor="weight">
+                            Height
+                        </label>
+                        <input
+                            name="height"
+                            placeholder="160cm"
+                            className="bmi-form__input"
+                            type="number"
+                            value={formData.height}
+                            onChange={handleChange}
+                            min="0"
+                            max="200"
+                        />
                     </div>
                 </div>
-            </div>
-            <div className="center">
                 <button
-                    className={styles.calculateBtn}
-                    type='button'
                     onClick={handleSubmit}
-                    disabled={formData.weight === '' || formData.height === ''}
-                >Calculate</button>
+                    className="bmi-form__btn btn btn--primary"
+                    disabled={!formData.weight || !formData.height}
+                >
+                    Calculate BMI
+                </button>
             </div>
         </>
     );
 }
-
-BmiForm.propTypes = {
-    change: PropTypes.func.isRequired,
-};
 
 export default BmiForm;

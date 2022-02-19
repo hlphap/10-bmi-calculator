@@ -1,0 +1,32 @@
+.app__title {
+    font-size: 3.6rem;
+    margin-top: 24px;
+}
+
+.app__body {
+    margin-top: 24px;
+}
+
+.app__history {
+    margin-top: 24px;
+    margin-left: -12px;
+    margin-right: -12px;
+    box-shadow: 0 0 10px rgb(0 0 0 / 25%);
+    padding: 12px 12px 24px;
+    position: relative;
+}
+
+.app__history-list.grid__row {
+    margin: 0;
+}
+
+.app__history-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.app__history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

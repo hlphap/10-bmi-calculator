@@ -1,42 +1,22 @@
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import styles from './Info.module.css';
+import "./Info.css";
 
-const Info = ({ weight, height, id, date, bmi, deleteCard }) => {
-    const handleDelete = () => {
-        deleteCard(id)
-    }
-
+function Info({ id, bmi, weight, height, date, handleDelete }) {
+    const handleClick = () => {
+        handleDelete(id);
+    };
     return (
-        <>
-            <div className="col m6 s12">
-                <div className={clsx(styles.card, 'card')}>
-                    <div className={clsx(styles.cardContent, 'card-content')}>
-                        <span className={clsx(styles.cardTitle, 'card-title')} data-test='bmi'>BMI: {bmi}</span>
-                        <div className={clsx(styles.cardData, 'card-data')}>
-                            <span data-test="weight">Weight: {weight} kg</span>
-                            <span data-test="height">Height: {height} cm</span>
-                            <span data-test="date">Date: {date}</span>
-                        </div>
-                        <button className={styles.deleteBtn} onClick={handleDelete}>
-                            X
-                        </button>
-                    </div>
-                </div>
+        <div className="info">
+            <h3 className="info__title text--center">BMI: {bmi}</h3>
+            <div className="info__wrap">
+                <span className="info__field">Weight: {weight}</span>
+                <span className="info__field">Height: {height}</span>
+                <span className="info__field">Date: {date}</span>
             </div>
-        </>
-    )
+            <button onClick={handleClick} className="info__delete">
+                x
+            </button>
+        </div>
+    );
 }
-
-
-Info.propTypes = {
-    weight: PropTypes.string,
-    height: PropTypes.string,
-    id: PropTypes.string,
-    date: PropTypes.string,
-    bmi: PropTypes.string,
-    deleteCard: PropTypes.func
-};
-
 
 export default Info;
